@@ -216,7 +216,7 @@ RAW = RAW.concat(make("Fashion Men", [
 ["Campus Men Running Shoes",999],["Asian Men Running Shoes",799],["Bata Men Formal Shoes",1299],
 ["Roadster Men Winter Jacket",1999],["Puma Men Winter Jacket",2499],["HRX Men Winter Jacket",1799],
 ["Levis Men T-Shirt Pack of 2",999],["Roadster Men T-Shirt Pack of 3",899],["HRX Men T-Shirt Pack of 2",799]
-])));
+]));
 
 // --- FASHION WOMEN 100 ---
 RAW = RAW.concat(make("Fashion Women", [
