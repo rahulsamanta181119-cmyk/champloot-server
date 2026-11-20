@@ -1,40 +1,60 @@
 const express = require('express');
-const axios = require('axios');
-const cheerio = require('cheerio');
 const cors = require('cors');
 const app = express();
 app.use(cors());
 app.use(express.json());
-const HEADERS = { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36', 'Accept-Language': 'en-IN,en;q=0.9' };
-async function fetchPrice(url, selector) {
-  try {
-    const { data } = await axios.get(url, { headers: HEADERS, timeout: 8000 });
-    const $ = cheerio.load(data);
-    let price = parseInt($(selector).first().text().trim().replace(/[^0-9]/g, ''));
-    return isNaN(price) ? null : price;
-  } catch (e) { return null; }
-}
-app.get('/api/price', async (req, res) => {
-  const q = req.query.q || "Nike Shoes";
-  const query = encodeURIComponent(q);
-  const [amazon, flipkart, myntra, meesho] = await Promise.all([
-    fetchPrice(`https://www.amazon.in/s?k=${query}`, '.a-price-whole'),
-    fetchPrice(`https://www.flipkart.com/search?q=${query}`, '._30jeq3'),
-    fetchPrice(`https://www.myntra.com/${query}`, '.product-discountedPrice'),
-    fetchPrice(`https://www.meesho.com/search?q=${query}`, '.sc-eDvSVe'),
-  ]);
-  let results = [
-    { store: "Amazon", price: amazon, link: `https://www.amazon.in/s?k=${query}`, logo: "🛒" },
-    { store: "Flipkart", price: flipkart, link: `https://www.flipkart.com/search?q=${query}`, logo: "🛍️" },
-    { store: "Myntra", price: myntra, link: `https://www.myntra.com/${query}`, logo: "👗" },
-    { store: "Meesho", price: meesho, link: `https://www.meesho.com/search?q=${query}`, logo: "🛒" },
-    { store: "Ajio", price: null, link: `https://www.ajio.com/search/?text=${query}`, logo: "✨" },
-  ];
-  let withPrice = results.filter(r => r.price);
-  withPrice.sort((a,b) => a.price - b.price);
-  let lowest = withPrice[0] ? withPrice[0].store : null;
-  res.json({ query: q, lowest, results });
+
+const PRODUCTS = [
+  {
+    id: 1, name: "boAt Airdopes 141 TWS Earbuds", category: "Earbuds",
+    image: "https://m.media-amazon.com/images/I/51aT8yKxK8L._SL1500_.jpg",
+    stores: [
+      { name: "Amazon", price: 1299, discount: 74, link: "https://www.amazon.in/s?k=boat+airdopes+141" },
+      { name: "Flipkart", price: 1199, discount: 76, link: "https://www.flipkart.com/search?q=boat+airdopes+141" },
+      { name: "Meesho", price: 1399, discount: 60, link: "https://www.meesho.com/search?q=boat+airdopes" }
+    ]
+  },
+  {
+    id: 2, name: "Noise ColorFit Pro 5 Smart Watch", category: "Watch",
+    image: "https://m.media-amazon.com/images/I/61x+8j2g8QL._SL1500_.jpg",
+    stores: [
+      { name: "Amazon", price: 2499, discount: 68, link: "https://www.amazon.in/s?k=noise+colorfit+pro+5" },
+      { name: "Flipkart", price: 2299, discount: 70, link: "https://www.flipkart.com/search?q=noise+colorfit+pro+5" },
+      { name: "Meesho", price: 2599, discount: 55, link: "https://www.meesho.com/search?q=smart+watch" }
+    ]
+  },
+  {
+    id: 3, name: "Puma Running Shoes For Men", category: "Shoes",
+    image: "https://m.media-amazon.com/images/I/61p+2y5k5wL._SL1500_.jpg",
+    stores: [
+      { name: "Amazon", price: 1799, discount: 55, link: "https://www.amazon.in/s?k=puma+running+shoes" },
+      { name: "Flipkart", price: 1649, discount: 58, link: "https://www.flipkart.com/search?q=puma+shoes" },
+      { name: "Meesho", price: 899, discount: 40, link: "https://www.meesho.com/search?q=puma+shoes" }
+    ]
+  },
+  {
+    id: 4, name: "Samsung Galaxy M34 5G Mobile", category: "Mobile",
+    image: "https://m.media-amazon.com/images/I/81+6Yv0+9gL._SL1500_.jpg",
+    stores: [
+      { name: "Amazon", price: 15999, discount: 36, link: "https://www.amazon.in/s?k=samsung+m34" },
+      { name: "Flipkart", price: 15499, discount: 38, link: "https://www.flipkart.com/search?q=samsung+m34" },
+      { name: "Shopsy", price: 15899, discount: 35, link: "https://www.shopsy.in/search?q=samsung+m34" }
+    ]
+  }
+];
+
+app.get('/', (req,res)=> res.send('PriceLoot Server Live!'));
+
+app.get('/api/search', (req,res)=>{
+  let q = (req.query.q || '').toLowerCase();
+  let cat = req.query.cat || 'ALL';
+  let result = PRODUCTS.filter(p => {
+    if(cat !== 'ALL' && p.category !== cat) return false;
+    if(q && !p.name.toLowerCase().includes(q)) return false;
+    return true;
+  });
+  res.json(result);
 });
-app.get('/', (req,res)=> res.send("PriceLoot Server Running"));
+
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, ()=> console.log("Server running on port " + PORT));
+app.listen(PORT, ()=> console.log('Server running on ' + PORT));
