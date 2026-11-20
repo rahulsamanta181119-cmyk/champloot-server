@@ -252,7 +252,7 @@ RAW = RAW.concat(make("Fashion Women", [
 ["H&M Women Cardigan",899],["Zara Women Cardigan",999],
 ["Mango Women Leather Jacket",2999],["Zara Women Leather Jacket",3499],
 ["DressBerry Women Co-ord Set",999],["Tokyo Talkies Women Dress",799],["Tokyo Talkies Women Top",499],["Tokyo Talkies Women Jeans",899]
-])));
+]));
 
 // --- JEWELLERY 100 ---
 RAW = RAW.concat(make("Jewellery", [
@@ -288,7 +288,7 @@ RAW = RAW.concat(make("Jewellery", [
 ["Voylla Earrings Gift Box",699],["Zaveri Pearls Earrings Gift",799],
 ["Yellow Chimes Anklet Payal",499],["Shining Diva Anklet",599],
 ["Karatcart Diamond Stud Earrings",1999],["Peora Diamond Stud",2499]
-])));
+]));
 
 // --- TOYS 100 ---
 RAW = RAW.concat(make("Toys", [
@@ -321,7 +321,7 @@ RAW = RAW.concat(make("Toys", [
 ["Doll House Set",1999],["Doll Set of 3",1499],
 ["Ball Pool Balls 100 Pcs",499],["Baby Play Mat",899],["Baby Gym Toy",1199],
 ["Kite Set",299],["Cricket Set Kids",999],["Football Kids",699],["Badminton Set Kids",899]
-])));
+]));
 
 // --- MAKEUP 100 ---
 RAW = RAW.concat(make("Makeup", [
@@ -352,7 +352,7 @@ RAW = RAW.concat(make("Makeup", [
 ["Lakme Blush",349],["Lakme Highlighter",499],["Lakme Setting Spray",599],
 ["Renee Compact",399],["Renee Foundation",599],["Blue Heaven Compact",249],["Elle 18 Compact",199],
 ["Kay Beauty Compact",499],["Wet n Wild Compact",399],["Insight Compact",249]
-])));
+]));
 
 // --- SKIN CARE 100 ---
 RAW = RAW.concat(make("Skin Care", [
