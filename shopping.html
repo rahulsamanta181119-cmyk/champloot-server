@@ -3,84 +3,79 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PriceLoot - Compare Best Price</title>
+<title>PriceLoot - Lowest Price</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
 body{background:#f1f3f6;padding-bottom:30px}
-.header{background:#2874f0;color:#fff;padding:16px 12px;position:sticky;top:0;z-index:20;text-align:center}
+.header{background:#2874f0;color:#fff;padding:16px;text-align:center;position:sticky;top:0;z-index:20}
 .header h1{font-size:24px}
-.header p{font-size:12px;opacity:.9;margin-top:3px}
-.search-wrap{padding:12px;display:flex;gap:8px;position:sticky;top:68px;background:#f1f3f6;z-index:10}
-.search-wrap input{flex:1;padding:13px;border:1px solid #ddd;border-radius:8px;font-size:15px;outline:none}
-.search-wrap button{background:#ff9f00;color:#fff;border:none;padding:0 20px;border-radius:8px;font-weight:800;cursor:pointer}
-.cats{display:flex;gap:8px;overflow-x:auto;padding:6px 12px 10px;scrollbar-width:none}
-.cats::-webkit-scrollbar{display:none}
-.cats button{white-space:nowrap;border:1px solid #ddd;background:#fff;padding:9px 15px;border-radius:20px;font-size:13px;cursor:pointer}
+.search-wrap{padding:12px;display:flex;gap:8px}
+.search-wrap input{flex:1;padding:13px;border:1px solid #ddd;border-radius:8px;font-size:15px}
+.search-wrap button{background:#ff9f00;color:#fff;border:none;padding:0 20px;border-radius:8px;font-weight:800}
+.cats{display:flex;gap:8px;overflow-x:auto;padding:0 12px 10px}
+.cats button{white-space:nowrap;border:1px solid #ddd;background:#fff;padding:9px 15px;border-radius:20px;cursor:pointer}
 .cats button.active{background:#2874f0;color:#fff;font-weight:bold}
-.count{padding:0 12px 10px;font-size:14px;color:#111;font-weight:700;background:#fff8e1;border:1px solid #ffe082;margin:0 12px 10px;border-radius:8px;padding:10px;text-align:center}
+.count{margin:0 12px 10px;background:#fff8e1;border:1px solid #ffe082;padding:10px;border-radius:8px;text-align:center;font-weight:700}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 12px}
 @media(min-width:700px){.grid{grid-template-columns:repeat(4,1fr)}}
 .card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 1px 5px rgba(0,0,0,.1);display:flex;flex-direction:column}
 .card img{width:100%;height:175px;object-fit:cover;background:#eee}
 .card-body{padding:10px;display:flex;flex-direction:column;gap:6px;flex:1}
-.cat-tag{font-size:11px;color:#2874f0;background:#e8f0fe;padding:3px 8px;border-radius:10px;width:fit-content;font-weight:700}
 .card-body h3{font-size:13px;line-height:1.35;min-height:36px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .best{font-size:12px;color:#388e3c;font-weight:700}
 .best b{font-size:18px;color:#111}
 .stores{border-top:1px dashed #ddd;padding-top:6px;display:flex;flex-direction:column;gap:6px;margin-top:auto}
 .row{display:flex;justify-content:space-between;font-size:12px}
-.off{color:#388e3c;font-weight:700;font-size:11px}
+.off{color:#388e3c;font-weight:700}
 .buy{display:block;text-align:center;padding:9px;border-radius:7px;color:#fff;text-decoration:none;font-weight:800;font-size:13px}
 .buy.amazon{background:#ff9900}
 .buy.flipkart{background:#2874f0}
 .buy.meesho{background:#570d57}
-.load-more{display:block;margin:18px auto 0;background:#ff9f00;color:#fff;border:none;padding:14px 40px;border-radius:25px;font-weight:800;font-size:16px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.load-more{display:block;margin:18px auto 0;background:#ff9f00;color:#fff;border:none;padding:14px 40px;border-radius:25px;font-weight:800;font-size:16px;cursor:pointer}
 .loading{text-align:center;padding:40px;color:#777;grid-column:1/-1}
-.footer{text-align:center;padding:22px;color:#888;font-size:12px}
 </style>
 </head>
 <body>
 <div class="header"><h1>🛍️ PriceLoot</h1><p>1300+ Real Products • Real Photo • Real Price</p></div>
-<div class="search-wrap"><input id="q" placeholder="Search iPhone, Saree, Drone, Lipstick..." onkeyup="if(event.key==='Enter') searchNow()"><button onclick="searchNow()">Search</button></div>
-<div class="cats" id="cats">
-<button class="active" onclick="setCat('ALL',this)">✨ All (1300+)</button>
-<button onclick="setCat('Mobile',this)">📱 Mobile</button>
-<button onclick="setCat('Earbuds',this)">🎧 Earbuds</button>
-<button onclick="setCat('Watch',this)">⌚ Watch</button>
-<button onclick="setCat('Headphones',this)">🎧 Headphones</button>
-<button onclick="setCat('Fridge',this)">❄️ Fridge</button>
-<button onclick="setCat('Air Cooler',this)">💨 Air Cooler</button>
-<button onclick="setCat('Air Conditioner',this)">❄️ AC</button>
-<button onclick="setCat('Fashion Men',this)">👔 Fashion Men</button>
-<button onclick="setCat('Fashion Women',this)">👗 Fashion Women</button>
-<button onclick="setCat('Jewellery',this)">💍 Jewellery</button>
-<button onclick="setCat('Toys',this)">🧸 Toys</button>
-<button onclick="setCat('Makeup',this)">💄 Makeup</button>
-<button onclick="setCat('Skin Care',this)">✨ Skin Care</button>
-</div>
+<div class="search-wrap"><input id="q" placeholder="Search iPhone, Saree, Drone..." onkeyup="if(event.key==='Enter') searchNow()"><button onclick="searchNow()">Search</button></div>
+<div class="cats" id="cats"></div>
 <div class="count" id="count">Loading...</div>
 <div class="grid" id="grid"><div class="loading">Loading All Products...</div></div>
-<button id="moreBtn" class="load-more" style="display:none" onclick="loadMore()">Load More ↓ Show More Products</button>
-<div class="footer">PriceLoot • Made in India 🇮🇳</div>
+<button id="moreBtn" class="load-more" style="display:none" onclick="loadMore()">Load More ↓</button>
 <script>
-const API_BASE = "https://champloot-server.onrender.com";
+const API_BASE="https://champloot-server.onrender.com";
+const ALL_CATS=['Mobile','Earbuds','Watch','Headphones','Fridge','Air Cooler','Air Conditioner','Fashion Men','Fashion Women','Jewellery','Toys','Makeup','Skin Care'];
 let currentCat='ALL', currentQ='', allData=[], shown=0;
 const PAGE=100;
+function buildCats(){
+  let html=`<button class="active" onclick="setCat('ALL',this)">✨ All</button>`;
+  html+=ALL_CATS.map(c=>`<button onclick="setCat('${c}',this)">${c}</button>`).join('');
+  document.getElementById('cats').innerHTML=html;
+}
 function setCat(cat,btn){currentCat=cat;document.querySelectorAll('.cats button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');load();}
 function searchNow(){currentQ=document.getElementById('q').value.trim();load();}
+async function fetchOne(cat,q){
+  try{
+    let r=await fetch(`${API_BASE}/api/search?q=${encodeURIComponent(q)}&cat=${encodeURIComponent(cat)}`);
+    let d=await r.json();
+    return Array.isArray(d)?d:[];
+  }catch(e){return [];}
+}
 async function load(){
   let grid=document.getElementById('grid');
-  grid.innerHTML='<div class="loading">Loading ALL products from server... Please wait 10 sec...</div>';
+  grid.innerHTML='<div class="loading">Loading ALL products... Fetching all categories one by one, please wait 15 sec...</div>';
   document.getElementById('moreBtn').style.display='none'; shown=0; allData=[];
   document.getElementById('count').innerText='Loading...';
-  try{
-    let res=await fetch(`${API_BASE}/api/search?q=${encodeURIComponent(currentQ)}&cat=${encodeURIComponent(currentCat)}`);
-    allData=await res.json();
-    console.log("TOTAL FROM SERVER:", allData.length);
-    document.getElementById('count').innerText=`✅ TOTAL FROM SERVER: ${allData.length} products | Showing 0 | Category: ${currentCat}`;
-    if(allData.length===0){grid.innerHTML='<div class="loading">No product found. Check server.</div>';return;}
-    grid.innerHTML=''; renderNext();
-  }catch(e){grid.innerHTML='<div class="loading">Server is sleeping... Wait 30 sec and Refresh page.</div>';}
+  if(currentCat==='ALL' && !currentQ){
+    let promises=ALL_CATS.map(c=>fetchOne(c,''));
+    let results=await Promise.all(promises);
+    let seen=new Set();
+    results.forEach(arr=>{arr.forEach(p=>{let key=p.name; if(!seen.has(key)){seen.add(key); allData.push(p);}})});
+  } else {
+    allData=await fetchOne(currentCat,currentQ);
+  }
+  if(allData.length===0){grid.innerHTML='<div class="loading">No product found. Server sleeping, wait 30 sec and refresh.</div>';return;}
+  grid.innerHTML=''; renderNext();
 }
 function renderNext(){
   let grid=document.getElementById('grid');
@@ -88,14 +83,14 @@ function renderNext(){
   grid.insertAdjacentHTML('beforeend', next.map(p=>{
     let best=p.stores.reduce((a,b)=>a.price<b.price?a:b);
     let sHtml=p.stores.map(s=>`<div class="row"><span>${s.name} <span class="off">${s.discount}% off</span></span><b>₹${s.price.toLocaleString('en-IN')}</b></div><a class="buy ${s.name.toLowerCase()}" href="${s.link}" target="_blank">Buy on ${s.name} ↗</a>`).join('');
-    return `<div class="card"><img src="${p.image}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400'" loading="lazy"><div class="card-body"><span class="cat-tag">${p.category}</span><h3>${p.name}</h3><div class="best">Best: <b>₹${best.price.toLocaleString('en-IN')}</b> on ${best.name}</div><div class="stores">${sHtml}</div></div></div>`;
+    return `<div class="card"><img src="${p.image}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400'" loading="lazy"><div class="card-body"><span style="font-size:11px;color:#2874f0;font-weight:700">${p.category}</span><h3>${p.name}</h3><div class="best">Best: <b>₹${best.price.toLocaleString('en-IN')}</b> on ${best.name}</div><div class="stores">${sHtml}</div></div></div>`;
   }).join(''));
-  document.getElementById('count').innerText = `✅ TOTAL FROM SERVER: ${allData.length} products | SHOWING: ${shown} / ${allData.length} | Category: ${currentCat} - Click Load More for rest`;
-  if(shown < allData.length){document.getElementById('moreBtn').style.display='block'; document.getElementById('moreBtn').innerText=`Load More ↓ (${shown} / ${allData.length} shown - ${allData.length-shown} more left)`;}
+  document.getElementById('count').innerText=`✅ TOTAL LOADED: ${allData.length} products | SHOWING: ${shown} / ${allData.length}`;
+  if(shown < allData.length){document.getElementById('moreBtn').style.display='block'; document.getElementById('moreBtn').innerText=`Load More ↓ (${shown} / ${allData.length} - ${allData.length-shown} more left)`;}
   else{document.getElementById('moreBtn').style.display='none';}
 }
-function loadMore(){renderNext(); window.scrollBy({top:500, behavior:'smooth'});}
-load();
+function loadMore(){renderNext();}
+buildCats(); load();
 </script>
 </body>
 </html>
