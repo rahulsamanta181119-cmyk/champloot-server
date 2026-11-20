@@ -23,13 +23,18 @@ const IMGS = {
 
 // Helper: [Real Name, Real Price]
 function make(cat, list){
-  let imgs = IMGS[cat] || IMGS["Mobile"];
-  return list.map((x,i)=>({
-    name: x[0], price: x[1], category: cat,
-    image: `https://images.unsplash.com/${imgs[i % imgs.length]}?w=400&q=80`
-  }));
+  return list.map((x,i)=>{
+    let name = x[0];
+    let keyword = name.replace(/[^a-zA-Z0-9 ]/g,"").split(" ").slice(0,2).join(",");
+    return {
+      name: name,
+      price: x[1],
+      mrp: Math.round(x[1]*1.4),
+      category: cat,
+      image: "https://loremflickr.com/400/400/" + encodeURIComponent(keyword) + "?lock=" + encodeURIComponent(name)
+    };
+  });
 }
-
 let RAW = [];
 
 // --- MOBILE 105 REAL MODELS ---
