@@ -410,7 +410,7 @@ app.get('/api/search', (req,res)=>{
     if(q && !p.name.toLowerCase().includes(q)) return false;
     return true;
   });
-  res.json(result.slice(result));
+  res.json(result);
 });
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, ()=> console.log('Running '+PORT+' Total '+PRODUCTS.length));
